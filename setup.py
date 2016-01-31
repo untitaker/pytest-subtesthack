@@ -5,7 +5,7 @@ setup(
     description='A hack to explicitly set up and tear down fixtures.',
     long_description=open('README.rst').read(),
     version='0.1.0',
-    license='MIT',
+    license='Public domain',
     author='Markus Unterwaditzer',
     author_email='markus@unterwaditzer.net',
     url='https://github.com/untitaker/pytest-subtesthack/',
