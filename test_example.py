@@ -12,7 +12,7 @@ def test_foo(thing, subtest, s):
     outer_thing = thing
     @subtest
     def test_inner(tmpdir, thing):
-        # A fresh tmpdir is created for each run of test_foo. This is not
+        # A fresh tmpdir is created for each run of `test_inner`. This is not
         # the case if the tmpdir fixture is required in `test_foo`, in that
         # case test state would be leaked.
 
