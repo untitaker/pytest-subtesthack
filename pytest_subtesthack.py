@@ -6,11 +6,18 @@ from _pytest.python import Function
 def subtest(request):
     parent_test = request.node
     def inner(func):
-        item = Function(
-            name=request.function.__name__ + '[]',
-            parent=parent_test.parent,
-            callobj=func,
-        )
+        if hasattr(Function, "from_parent"):
+            item = Function.from_parent(
+                parent_test.parent,
+                name=request.function.__name__ + '[]',
+            )
+            item.callobj=func
+        else:
+            item = Function(
+                name=request.function.__name__ + '[]',
+                parent=parent_test.parent,
+                callobj=func
+            )
         nextitem = parent_test  # prevents pytest from tearing down module fixtures
 
         item.ihook.pytest_runtest_setup(item=item)
