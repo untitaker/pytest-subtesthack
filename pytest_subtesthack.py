@@ -10,8 +10,9 @@ def subtest(request):
             item = Function.from_parent(
                 parent_test.parent,
                 name=request.function.__name__ + '[]',
+                originalname=request.function.__name__,
+                callobj=func,
             )
-            item.callobj=func
         else:
             item = Function(
                 name=request.function.__name__ + '[]',
@@ -23,6 +24,7 @@ def subtest(request):
         item.ihook.pytest_runtest_setup(item=item)
         item.ihook.pytest_runtest_call(item=item)
         item.ihook.pytest_runtest_teardown(item=item, nextitem=nextitem)
+
 
 
     return inner
