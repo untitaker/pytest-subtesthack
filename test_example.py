@@ -7,7 +7,6 @@ from hypothesis.strategies import text
 def thing():
     return object()
 
-@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @given(s=text())
 def test_foo(thing, subtest, s):
     outer_thing = thing
@@ -23,3 +22,8 @@ def test_foo(thing, subtest, s):
         assert not tmpdir.listdir()
         tmpdir.join('lol').write(repr(s))
 
+
+try:
+    test_foo = settings(suppress_health_check=[HealthCheck.function_scoped_fixture])(test_foo)  # type: ignore
+except AttributeError:
+    pass
