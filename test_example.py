@@ -1,6 +1,6 @@
 import pytest
 
-from hypothesis import given
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import text
 
 @pytest.fixture(scope='module')
@@ -22,3 +22,8 @@ def test_foo(thing, subtest, s):
         assert not tmpdir.listdir()
         tmpdir.join('lol').write(repr(s))
 
+
+try:
+    test_foo = settings(suppress_health_check=[HealthCheck.function_scoped_fixture])(test_foo)  # type: ignore
+except AttributeError:
+    pass
