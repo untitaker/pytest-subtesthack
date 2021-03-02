@@ -1,12 +1,13 @@
 import pytest
 
-from hypothesis import given
+from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import text
 
 @pytest.fixture(scope='module')
 def thing():
     return object()
 
+@settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
 @given(s=text())
 def test_foo(thing, subtest, s):
     outer_thing = thing

@@ -8,7 +8,7 @@ def subtest(request):
     def inner(func):
         if hasattr(Function, "from_parent"):
             item = Function.from_parent(
-                parent_test.parent,
+                parent_test,
                 name=request.function.__name__ + '[]',
                 originalname=request.function.__name__,
                 callobj=func,
@@ -16,7 +16,7 @@ def subtest(request):
         else:
             item = Function(
                 name=request.function.__name__ + '[]',
-                parent=parent_test.parent,
+                parent=parent_test,
                 callobj=func
             )
         nextitem = parent_test  # prevents pytest from tearing down module fixtures
