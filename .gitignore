@@ -8,3 +8,5 @@ build
 dist
 .cache
 .hypothesis
+.envrc
+.venv
