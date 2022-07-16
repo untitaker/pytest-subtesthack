@@ -14,4 +14,6 @@ Installation::
 
     pip install pytest-subtesthack
 
+...though the plugin is 32 lines of code, consider vendoring it.
+
 See ``test_example.py`` for usage.
