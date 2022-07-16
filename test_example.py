@@ -3,6 +3,8 @@ import pytest
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import text
 
+pytest_plugins = ["pytester"]
+
 @pytest.fixture(scope='module')
 def thing():
     return object()
@@ -27,3 +29,32 @@ try:
     test_foo = settings(suppress_health_check=[HealthCheck.function_scoped_fixture])(test_foo)  # type: ignore
 except AttributeError:
     pass
+
+
+def test_failure(pytester):
+    """Make sure test failures do not crash pytest."""
+
+    pytester.makepyfile(
+        """
+        import pytest
+
+        from hypothesis import given, settings, HealthCheck
+        from hypothesis.strategies import text
+
+        @pytest.fixture(scope='function')
+        def thing():
+            return object()
+
+        @given(s=text())
+        @settings(suppress_health_check=[HealthCheck.function_scoped_fixture])
+        def test_foo(subtest, s):
+            @subtest
+            def test_inner(thing):
+                assert s, "the string is empty"
+    """
+    )
+
+    result = pytester.runpytest()
+
+    result.assert_outcomes(failed=1)
+    result.stdout.fnmatch_lines(["FAILED test_failure.py::test_foo - AssertionError: the string is empty"])

@@ -22,8 +22,10 @@ def subtest(request):
         nextitem = parent_test  # prevents pytest from tearing down module fixtures
 
         item.ihook.pytest_runtest_setup(item=item)
-        item.ihook.pytest_runtest_call(item=item)
-        item.ihook.pytest_runtest_teardown(item=item, nextitem=nextitem)
+        try:
+            item.ihook.pytest_runtest_call(item=item)
+        finally:
+            item.ihook.pytest_runtest_teardown(item=item, nextitem=nextitem)
 
 
 
